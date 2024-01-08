@@ -1,5 +1,7 @@
 package com.example.sharingapp;
 
+import java.util.UUID;
+
 public class Contact
 {
 	private String username;
@@ -10,7 +12,10 @@ public class Contact
 	{
 		this.username = username;
 		this.email = email;
-		this.id = id;
+		if(id == null)
+			setId();
+		else
+			updateId(id);
 	}
 
 	public String getUsername()
@@ -38,9 +43,9 @@ public class Contact
 		return id;
 	}
 
-	public void setId(String id)
+	public void setId()
 	{
-		this.id = id;
+		this.id = UUID.randomUUID().toString();
 	}
 
 	public void updateId(String id)
