@@ -56,7 +56,12 @@ public class ContactList
 
 	public int getIndex(Contact contact)
 	{
-		return contacts.indexOf(contact);
+		for(int i = 0; i < contacts.size(); i++)
+		{
+			if(contact.equals(contacts.get(i)))
+				return i;
+		}
+		return -1;
 	}
 
 	public boolean hasContact(Contact contact)

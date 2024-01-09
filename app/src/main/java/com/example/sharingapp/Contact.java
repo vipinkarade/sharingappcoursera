@@ -52,4 +52,11 @@ public class Contact
 	{
 		this.id = id;
 	}
+
+	public boolean equals(Contact contact)
+	{
+		if(contact.getId().equals(this.id))
+			return true;
+		return false;
+	}
 }
