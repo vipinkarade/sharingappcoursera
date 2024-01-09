@@ -58,6 +58,7 @@ public abstract class ItemsFragment extends Fragment {
                 Item item = adapter.getItem(pos);
 
                 int meta_pos = item_list.getIndex(item);
+
                 if (meta_pos >= 0) {
 
                     Intent edit = new Intent(context, EditItemActivity.class);
@@ -74,5 +75,4 @@ public abstract class ItemsFragment extends Fragment {
      * @return selected_items
      */
     public abstract ArrayList<Item> filterItems();
-
 }

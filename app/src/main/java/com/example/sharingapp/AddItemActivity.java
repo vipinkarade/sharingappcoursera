@@ -87,11 +87,17 @@ public class AddItemActivity extends AppCompatActivity {
             return;
         }
 
-        Dimensions dimensions = new Dimensions(length_str, width_str, height_str);
-        Item item = new Item(title_str, maker_str, description_str, dimensions, image, null );
+        Item item = new Item(title_str, maker_str, description_str, image, null);
+        item.setDimensions(length_str, width_str, height_str);
 
-        item_list.addItem(item);
-        item_list.saveItems(context);
+        // Add item
+        AddItemCommand add_item_command = new AddItemCommand(item_list, item, context);
+        add_item_command.execute();
+
+        boolean success = add_item_command.isExecuted();
+        if (!success){
+            return;
+        }
 
         // End AddItemActivity
         Intent intent = new Intent(this, MainActivity.class);
@@ -111,13 +117,11 @@ public class AddItemActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int request_code, int result_code, Intent intent) {
-        if (request_code == REQUEST_CODE && result_code == RESULT_OK) {
+    protected void onActivityResult(int request_code, int result_code, Intent intent){
+        if (request_code == REQUEST_CODE && result_code == RESULT_OK){
             Bundle extras = intent.getExtras();
             image = (Bitmap) extras.get("data");
             photo.setImageBitmap(image);
-        } else {
-            super.onActivityResult(request_code, result_code, intent);
         }
     }
 }
