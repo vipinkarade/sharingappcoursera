@@ -66,18 +66,21 @@ public class EditContactActivity extends AppCompatActivity {
 
         Contact updated_contact = new Contact(username_str, email_str, id);
 
-        contact_list.deleteContact(contact);
-        contact_list.addContact(updated_contact);
-        contact_list.saveContacts(context);
+        EditContactCommand editContactCommand = new EditContactCommand(contact_list, contact, updated_contact, context);
+        editContactCommand.execute();
+        if(!editContactCommand.isExecuted())
+            return;
 
         // End EditContactActivity
         finish();
     }
 
     public void deleteContact(View view) {
+        DeleteContactCommand deleteContactCommand = new DeleteContactCommand(contact_list, contact, context);
 
-        contact_list.deleteContact(contact);
-        contact_list.saveContacts(context);
+        deleteContactCommand.execute();
+        if(!deleteContactCommand.isExecuted())
+            return;
 
         // End EditContactActivity
         finish();
