@@ -14,9 +14,9 @@ import java.util.ArrayList;
  * ContactAdapter is responsible for what information is displayed in ListView entries.
  */
 public class ContactAdapter extends ArrayAdapter<Contact> {
-
     private LayoutInflater inflater;
     private Context context;
+
 
     public ContactAdapter(Context context, ArrayList<Contact> contacts) {
         super(context, 0, contacts);
