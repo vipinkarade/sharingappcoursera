@@ -31,6 +31,13 @@ public class AddItemActivity extends AppCompatActivity {
 
     private Context context;
 
+    private String title_str;
+    private String maker_str;
+    private String description_str;
+    private String length_str;
+    private String width_str;
+    private String height_str;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,42 +60,15 @@ public class AddItemActivity extends AppCompatActivity {
 
     public void saveItem (View view) {
 
-        String title_str = title.getText().toString();
-        String maker_str = maker.getText().toString();
-        String description_str = description.getText().toString();
-        String length_str = length.getText().toString();
-        String width_str = width.getText().toString();
-        String height_str = height.getText().toString();
+        title_str = title.getText().toString();
+        maker_str = maker.getText().toString();
+        description_str = description.getText().toString();
+        length_str = length.getText().toString();
+        width_str = width.getText().toString();
+        height_str = height.getText().toString();
 
-        if (title_str.equals("")) {
-            title.setError("Empty field!");
+        if(!validateInput())
             return;
-        }
-
-        if (maker_str.equals("")) {
-            maker.setError("Empty field!");
-            return;
-        }
-
-        if (description_str.equals("")) {
-            description.setError("Empty field!");
-            return;
-        }
-
-        if (length_str.equals("")) {
-            length.setError("Empty field!");
-            return;
-        }
-
-        if (width_str.equals("")) {
-            width.setError("Empty field!");
-            return;
-        }
-
-        if (height_str.equals("")) {
-            height.setError("Empty field!");
-            return;
-        }
 
         Item item = new Item(title_str, maker_str, description_str, image, null);
         ItemController item_controller = new ItemController(item);
@@ -125,5 +105,39 @@ public class AddItemActivity extends AppCompatActivity {
             image = (Bitmap) extras.get("data");
             photo.setImageBitmap(image);
         }
+    }
+
+    private boolean validateInput()
+    {
+        if (title_str.equals("")) {
+            title.setError("Empty field!");
+            return false;
+        }
+
+        if (maker_str.equals("")) {
+            maker.setError("Empty field!");
+            return false;
+        }
+
+        if (description_str.equals("")) {
+            description.setError("Empty field!");
+            return false;
+        }
+
+        if (length_str.equals("")) {
+            length.setError("Empty field!");
+            return false;
+        }
+
+        if (width_str.equals("")) {
+            width.setError("Empty field!");
+            return false;
+        }
+
+        if (height_str.equals("")) {
+            height.setError("Empty field!");
+            return false;
+        }
+        return true;
     }
 }
