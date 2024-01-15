@@ -12,11 +12,10 @@
     tools:context="com.example.sharingapp.MainActivity">
 
     <ListView
-        android:id="@+id/my_borrowed_items"
+        android:id="@+id/my_bidded_items"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="75dp" />
 
 </LinearLayout>
-
