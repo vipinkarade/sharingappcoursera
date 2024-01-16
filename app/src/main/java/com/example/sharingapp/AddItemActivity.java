@@ -3,19 +3,19 @@ package com.example.sharingapp;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Add a new item
  */
-public class AddItemActivity extends AppCompatActivity
-{
+public class AddItemActivity extends AppCompatActivity {
 
     private EditText title;
     private EditText maker;
@@ -64,7 +64,7 @@ public class AddItemActivity extends AppCompatActivity
         photo.setImageResource(android.R.drawable.ic_menu_gallery);
 
         context = getApplicationContext();
-        item_list_controller.loadItems(context);
+        item_list_controller.getRemoteItems();
     }
 
     public void saveItem (View view) {
@@ -85,7 +85,7 @@ public class AddItemActivity extends AppCompatActivity
         ItemController item_controller = new ItemController(item);
         item_controller.setDimensions(length_str, width_str, height_str);
 
-        boolean success = item_list_controller.addItem(item, context);
+        boolean success = item_list_controller.addItem(item);
         if (!success){
             return;
         }
@@ -93,8 +93,15 @@ public class AddItemActivity extends AppCompatActivity
         // End AddItemActivity
         final Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("user_id", user_id);
-        Toast.makeText(context, "Item created.", Toast.LENGTH_SHORT).show();
-        startActivity(intent);
+
+        // Delay launch of new activity to allow server more time to process request
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, "Item created.", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
+            }
+        }, 750);
     }
 
     public void addPhoto(View view) {
@@ -111,11 +118,8 @@ public class AddItemActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onActivityResult(int request_code, int result_code, Intent intent)
-    {
-        super.onActivityResult(request_code, result_code, intent);
-        if (request_code == REQUEST_CODE && result_code == RESULT_OK)
-        {
+    protected void onActivityResult(int request_code, int result_code, Intent intent){
+        if (request_code == REQUEST_CODE && result_code == RESULT_OK){
             Bundle extras = intent.getExtras();
             image = (Bitmap) extras.get("data");
             photo.setImageBitmap(image);

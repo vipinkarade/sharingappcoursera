@@ -1,18 +1,18 @@
 package com.example.sharingapp;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Search other user's "Available" and "Bidded" items
@@ -43,8 +43,8 @@ public class SearchActivity extends AppCompatActivity implements Observer {
         context = getApplicationContext();
 
         item_list_controller.addObserver(this);
-        user_list_controller.loadUsers(context);
-        item_list_controller.loadItems(context);
+        user_list_controller.getRemoteUsers();
+        item_list_controller.getRemoteItems();
         item_list_controller.setItems(item_list_controller.getSearchItems(user_id));
 
         // When an item is long clicked, this starts ViewItemActivity
@@ -69,7 +69,7 @@ public class SearchActivity extends AppCompatActivity implements Observer {
     protected void onStart() {
         super.onStart();
         search_entry.setText("");
-        item_list_controller.loadItems(context);
+        item_list_controller.getRemoteItems();
         item_list_controller.setItems(item_list_controller.getSearchItems(user_id));
     }
 
@@ -87,7 +87,7 @@ public class SearchActivity extends AppCompatActivity implements Observer {
 
     public void keywordSearch(View view) {
         String entry = search_entry.getText().toString();
-        item_list_controller.loadItems(context);
+        item_list_controller.getRemoteItems();
         if (entry.equals("")) {
             item_list_controller.setItems(item_list_controller.getSearchItems(user_id));
             return;

@@ -1,5 +1,7 @@
 package com.example.sharingapp;
 
+import java.util.concurrent.ExecutionException;
+
 import android.content.Context;
 
 /**
@@ -17,9 +19,20 @@ public class DeleteBidCommand extends Command {
         this.context = context;
     }
 
-    // Delete bid locally
+    // Delete bid on remote server
     public void execute(){
-        bid_list.removeBid(bid);
-        super.setIsExecuted(bid_list.saveBids(context));
+        ElasticSearchManager.RemoveBidTask remove_bid_task = new ElasticSearchManager.RemoveBidTask();
+        remove_bid_task.execute(bid);
+
+        // use get() to access the return of RemoveBidTask. i.e. RemoveBidTask returns a Boolean to
+        // indicate if the bid was successfully deleted from the remote server
+        try {
+            if(remove_bid_task.get()) {
+                super.setIsExecuted(true);
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            super.setIsExecuted(false);
+        }
     }
 }

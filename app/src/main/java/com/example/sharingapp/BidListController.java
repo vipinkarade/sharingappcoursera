@@ -76,10 +76,10 @@ public class BidListController {
         return bid_list.getHighestBidder(id);
     }
 
-    public void loadBids(Context context) {
-        bid_list.loadBids(context);
+    public void getRemoteBids()
+    {
+        bid_list.getRemoteBids();
     }
-
     public boolean saveBids(Context context) {
         return bid_list.saveBids(context);
     }

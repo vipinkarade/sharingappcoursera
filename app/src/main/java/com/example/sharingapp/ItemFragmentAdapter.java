@@ -22,7 +22,7 @@ public class ItemFragmentAdapter extends ArrayAdapter<Item> {
 
     public ItemFragmentAdapter(Context context, ArrayList<Item> items, Fragment fragment) {
         super(context, 0, items);
-        this.inflater = LayoutInflater.from(context);
+        inflater = LayoutInflater.from(context);
         this.fragment = fragment;
         this.context = context;
     }
@@ -73,7 +73,7 @@ public class ItemFragmentAdapter extends ArrayAdapter<Item> {
         if (fragment instanceof BiddedItemsFragment) {
             BidList bid_list = new BidList();
             BidListController bid_list_controller = new BidListController(bid_list);
-            bid_list_controller.loadBids(parent.getContext());
+            bid_list_controller.getRemoteBids();
 
             String bidder = "Bidder: " + bid_list_controller.getHighestBidder(item_controller.getId());
             String highest_bid = "Highest Bid: " + bid_list_controller.getHighestBid(item_controller.getId());

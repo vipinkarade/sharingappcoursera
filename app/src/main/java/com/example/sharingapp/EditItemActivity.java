@@ -3,9 +3,10 @@ package com.example.sharingapp;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,7 +14,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Editing a pre-existing item consists of deleting the old item and adding a new item with the old
@@ -103,11 +103,11 @@ public class EditItemActivity extends AppCompatActivity implements Observer {
 
         on_create_update = false; // Suppress first call to update()
         item_list_controller.addObserver(this);
-        item_list_controller.loadItems(context);
+        item_list_controller.getRemoteItems();
 
         on_create_update = true;
         user_list_controller.addObserver(this);
-        user_list_controller.loadUsers(context); // Call to update occurs
+        user_list_controller.getRemoteUsers(); // Call update occurs
 
         on_create_update = false; // Suppress any further calls to update()
     }
@@ -135,6 +135,7 @@ public class EditItemActivity extends AppCompatActivity implements Observer {
             image = (Bitmap) extras.get("data");
             photo.setImageBitmap(image);
             Toast.makeText(context, "Photo added.", Toast.LENGTH_SHORT).show();
+
         }
     }
 
@@ -146,7 +147,7 @@ public class EditItemActivity extends AppCompatActivity implements Observer {
     }
 
     public void deleteItem(View view) {
-        boolean success = item_list_controller.deleteItem(item, context);
+        boolean success = item_list_controller.deleteItem(item);
         if (!success){
             return;
         }
@@ -189,7 +190,8 @@ public class EditItemActivity extends AppCompatActivity implements Observer {
         updated_item_controller.setDimensions(length_str, width_str, height_str);
         updated_item_controller.setStatus(status_str);
 
-        boolean success = item_list_controller.editItem(item, updated_item, context);
+        boolean success = item_list_controller.editItem(item, updated_item);
+
         if (!success){
             return;
         }
@@ -200,8 +202,15 @@ public class EditItemActivity extends AppCompatActivity implements Observer {
         // End EditItemActivity
         final Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("user_id", user_id);
-        Toast.makeText(context, "Item saved.", Toast.LENGTH_SHORT).show();
-        startActivity(intent);
+
+        // Delay launch of MainActivity to allow server enough time to process request
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, "Item saved.", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
+            }
+        }, 750);
     }
 
     public void viewBids(View view){

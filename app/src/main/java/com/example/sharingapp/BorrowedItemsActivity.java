@@ -2,12 +2,12 @@ package com.example.sharingapp;
 
 import android.content.Context;
 import android.content.Intent;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import androidx.appcompat.app.AppCompatActivity;
 
 public class BorrowedItemsActivity extends AppCompatActivity implements Observer {
 
@@ -21,7 +21,6 @@ public class BorrowedItemsActivity extends AppCompatActivity implements Observer
     private ArrayAdapter<Item> adapter;
     private Context context;
     private String user_id;
-    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +32,11 @@ public class BorrowedItemsActivity extends AppCompatActivity implements Observer
 
         context = getApplicationContext();
 
-        user_list_controller.loadUsers(context);
-        username = user_list_controller.getUsernameByUserId(user_id);
+        user_list_controller.getRemoteUsers();
+        String username = user_list_controller.getUsernameByUserId(user_id);
 
         item_list_controller.addObserver(this);
-        item_list_controller.loadItems(context);
+        item_list_controller.getRemoteItems();
         item_list_controller.setItems(item_list_controller.getBorrowedItemsByUsername(username));
 
         // When an item is long clicked, this starts ViewItemActivity

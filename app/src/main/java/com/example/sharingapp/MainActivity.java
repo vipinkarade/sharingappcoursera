@@ -14,8 +14,7 @@ import com.google.android.material.tabs.TabLayout;
 /**
  * Home Activity of the App
  */
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
 
     private String user_id;
 
@@ -24,7 +23,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = getIntent(); // Get intent from LoginActivity
+        Intent intent = getIntent(); // from LoginActivity
         user_id = intent.getStringExtra("user_id");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
